@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.android.purebilibili.core.lifecycle.BackgroundManager
-import dev.chrisbanes.haze.HazeState
 
 internal fun shouldEnableRecoverableHeavyVisualEffects(
     userEnabled: Boolean,
@@ -31,47 +30,15 @@ internal fun shouldAllowDirectHazeLiquidGlassFallback(
     return sdkInt < 36
 }
 
+/**
+ * [优化] 返回 null 而不是 HazeState，禁用模糊效果
+ */
 @Composable
 fun rememberRecoverableHazeState(
     userEnabled: Boolean = true,
     initialBlurEnabled: Boolean = true,
     sdkInt: Int = Build.VERSION.SDK_INT
-): HazeState {
-    var isAppInBackground by remember { mutableStateOf(BackgroundManager.isInBackground) }
-    var recreationKey by remember { mutableIntStateOf(0) }
-    val shouldRecreateState = shouldRecreateRecoverableHazeState(sdkInt)
-    val hazeState = remember(initialBlurEnabled, recreationKey) {
-        HazeState(initialBlurEnabled = initialBlurEnabled)
-    }
-
-    DisposableEffect(shouldRecreateState) {
-        val listener = object : BackgroundManager.BackgroundStateListener {
-            override fun onEnterBackground() {
-                isAppInBackground = true
-                if (shouldRecreateState) {
-                    recreationKey += 1
-                }
-            }
-
-            override fun onEnterForeground() {
-                isAppInBackground = false
-                if (shouldRecreateState) {
-                    recreationKey += 1
-                }
-            }
-        }
-        BackgroundManager.addListener(listener)
-        onDispose {
-            BackgroundManager.removeListener(listener)
-        }
-    }
-
-    SideEffect {
-        hazeState.blurEnabled = shouldEnableRecoverableHeavyVisualEffects(
-            userEnabled = userEnabled,
-            isAppInBackground = isAppInBackground
-        )
-    }
-
-    return hazeState
+): Any? {
+    // [优化] 返回 null，禁用所有模糊效果
+    return null
 }

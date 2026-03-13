@@ -20,11 +20,10 @@ import androidx.compose.ui.graphics.SolidColor
 import com.android.purebilibili.core.theme.LocalCornerRadiusScale
 import com.android.purebilibili.core.theme.iOSCornerRadius
 import com.android.purebilibili.core.ui.common.copyOnLongPress
-import io.github.alexzhirkevich.cupertino.CupertinoSwitch
-import io.github.alexzhirkevich.cupertino.CupertinoSwitchDefaults
-import io.github.alexzhirkevich.cupertino.icons.CupertinoIcons
-import io.github.alexzhirkevich.cupertino.icons.filled.*
-import io.github.alexzhirkevich.cupertino.icons.outlined.*
+// [优化] 使用 Material Icons 替代 Cupertino Icons
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
 
 // ═══════════════════════════════════════════════════
 //  Common iOS List Components (Reused across Settings, Profile, etc.)
@@ -108,14 +107,14 @@ fun IOSSwitchItem(
                 Text(text = subtitle, style = MaterialTheme.typography.bodySmall, color = subtitleColor)
             }
         }
-        val primaryColor = MaterialTheme.colorScheme.primary
-        CupertinoSwitch(
+        // [优化] 使用 Material Switch 替代 CupertinoSwitch
+        Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
             enabled = enabled,
-            colors = CupertinoSwitchDefaults.colors(
-                thumbColor = Color.White,
-                checkedTrackColor = primaryColor,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = Color.White,
+                checkedTrackColor = MaterialTheme.colorScheme.primary,
                 uncheckedTrackColor = Color(0xFFE9E9EA)
             )
         )
@@ -228,7 +227,8 @@ fun IOSClickableItem(
                 }
                 if (onClick != null && showChevron) {
                     Spacer(modifier = Modifier.width(6.dp))
-                    Icon(CupertinoIcons.Default.ChevronForward, null, tint = chevronTint, modifier = Modifier.size(20.dp))
+                    // [优化] 使用 Material Icons 替代 CupertinoIcons
+                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null, tint = chevronTint, modifier = Modifier.size(20.dp))
                 }
             }
         }
@@ -325,8 +325,9 @@ fun IOSSearchBar(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(horizontal = 12.dp)
             ) {
+                // [优化] 使用 Material Icons 替代 CupertinoIcons
                 Icon(
-                    imageVector = CupertinoIcons.Default.MagnifyingGlass,
+                    imageVector = Icons.Filled.Search,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(18.dp)
@@ -348,7 +349,7 @@ fun IOSSearchBar(
                         modifier = Modifier.size(20.dp)
                     ) {
                         Icon(
-                            imageVector = CupertinoIcons.Default.XmarkCircle,
+                            imageVector = Icons.Filled.Close,
                             contentDescription = "Clear",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(16.dp)

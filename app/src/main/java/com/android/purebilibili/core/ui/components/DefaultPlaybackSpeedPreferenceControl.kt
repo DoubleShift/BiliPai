@@ -24,7 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.alexzhirkevich.cupertino.CupertinoSlider
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -130,7 +131,7 @@ fun DefaultPlaybackSpeedPreferenceControl(
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            CupertinoSlider(
+            Slider(
                 value = sliderValue,
                 onValueChange = { sliderValue = normalizeDefaultPlaybackPreferenceSpeed(it) },
                 onValueChangeFinished = { onSpeedChange(sliderValue) },

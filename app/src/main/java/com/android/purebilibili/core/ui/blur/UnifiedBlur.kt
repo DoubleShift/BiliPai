@@ -12,10 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import com.android.purebilibili.core.ui.adaptive.MotionTier
 import com.android.purebilibili.core.store.SettingsManager
 import androidx.compose.ui.draw.clip
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeInputScale
-import dev.chrisbanes.haze.ExperimentalHazeApi
-import dev.chrisbanes.haze.hazeEffect
 
 private val LocalUnifiedBlurIntensity = staticCompositionLocalOf<BlurIntensity?> { null }
 
@@ -55,15 +51,15 @@ fun currentUnifiedBlurIntensity(): BlurIntensity {
 /**
  *  统一的模糊Modifier
  * 
- * 自动根据用户设置选择模糊强度
+ * [优化] 移除 Haze 依赖，返回原始 Modifier
  * 
- * @param hazeState Haze状态
- * @param enabled 是否启用模糊
- * @return 应用了用户偏好模糊的Modifier
+ * @param hazeState Haze状态（已忽略）
+ * @param enabled 是否启用模糊（已忽略）
+ * @return 原始 Modifier
  */
 @Composable
 fun Modifier.unifiedBlur(
-    hazeState: HazeState,
+    hazeState: Any?,
     enabled: Boolean = true,
     shape: androidx.compose.ui.graphics.Shape? = null,
     surfaceType: BlurSurfaceType = BlurSurfaceType.GENERIC,
@@ -72,42 +68,10 @@ fun Modifier.unifiedBlur(
     isTransitionRunning: Boolean = false,
     forceLowBudget: Boolean = false
 ): Modifier = composed {
-    if (!enabled) return@composed this
-
-    val blurIntensity = currentUnifiedBlurIntensity()
-    val budget = resolveBlurBudget(
-        surfaceType = surfaceType,
-        motionTier = motionTier,
-        isScrolling = isScrolling,
-        isTransitionRunning = isTransitionRunning,
-        forceLowBudget = forceLowBudget
-    )
-    
-    // 根据用户选择获取对应的模糊样式
-    val blurStyle = BlurStyles.getBlurStyle(blurIntensity, budget)
-    
-    //  [修复] HazeEffect 不支持 shape 参数，需使用 clip 修饰符
-    //  仅当提供了 shape 时才应用 clip，避免破坏现有圆角组件 (如 BottomBar)
+    // [优化] 禁用模糊效果，仅保留 clip
     if (shape != null) {
         this.clip(shape)
     } else {
         this
-    }.hazeEffect(
-        state = hazeState,
-        style = blurStyle
-    ) {
-        blurEnabled = true
-        @OptIn(ExperimentalHazeApi::class)
-        run {
-            val inputScaleFactor = resolveBlurInputScale(
-                budget = budget,
-                surfaceType = surfaceType
-            )
-            inputScale = if (inputScaleFactor >= 1f) {
-                HazeInputScale.None
-            } else {
-                HazeInputScale.Fixed(inputScaleFactor)
-            }
-        }
     }
 }

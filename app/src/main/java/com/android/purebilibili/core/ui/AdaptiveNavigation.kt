@@ -16,10 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.util.LocalWindowSizeClass
 import com.android.purebilibili.core.util.WindowWidthSizeClass
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.hazeChild
-import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
-import dev.chrisbanes.haze.materials.HazeMaterials
+// [优化] 移除 Haze 导入
 
 /**
  * 📍 导航项数据
@@ -39,20 +36,21 @@ data class AdaptiveNavItem(
  * - Compact: 底部导航栏 (BottomBar)
  * - Medium/Expanded: 侧边导航栏 (NavigationRail)
  * 
+ * [优化] 移除 Haze 依赖，使用纯色背景
+ * 
  * @param items 导航项列表
  * @param selectedItemId 当前选中项 ID
  * @param onItemSelected 选中项回调
- * @param hazeState 毛玻璃状态（可选）
+ * @param hazeState 毛玻璃状态（已忽略）
  * @param modifier Modifier
  * @param content 主内容区域
  */
-@OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
 fun AdaptiveNavigationContainer(
     items: List<AdaptiveNavItem>,
     selectedItemId: String,
     onItemSelected: (String) -> Unit,
-    hazeState: HazeState? = null,
+    hazeState: Any? = null,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
@@ -106,13 +104,12 @@ fun AdaptiveNavigationContainer(
 /**
  * 🚀 侧边导航栏（平板模式）
  */
-@OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
 fun AdaptiveSideNavigationRail(
     items: List<AdaptiveNavItem>,
     selectedItemId: String,
     onItemSelected: (String) -> Unit,
-    hazeState: HazeState? = null
+    hazeState: Any? = null
 ) {
     val windowSizeClass = LocalWindowSizeClass.current
     val isExpanded = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
@@ -121,20 +118,9 @@ fun AdaptiveSideNavigationRail(
     NavigationRail(
         modifier = Modifier
             .fillMaxHeight()
-            .width(if (isExpanded) 80.dp else 72.dp)
-            .then(
-                if (hazeState != null) {
-                    Modifier.hazeChild(
-                        state = hazeState,
-                        style = HazeMaterials.ultraThin()
-                    )
-                } else Modifier
-            ),
-        containerColor = if (hazeState != null) {
-            MaterialTheme.colorScheme.surface.copy(alpha = 0.85f)
-        } else {
-            MaterialTheme.colorScheme.surface
-        },
+            .width(if (isExpanded) 80.dp else 72.dp),
+        // [优化] 使用纯色背景替代模糊效果
+        containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface
     ) {
         Spacer(Modifier.height(12.dp))
@@ -174,31 +160,18 @@ fun AdaptiveSideNavigationRail(
 /**
  * 📱 底部导航栏（手机模式）
  */
-@OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
 private fun AdaptiveBottomNavigationBar(
     items: List<AdaptiveNavItem>,
     selectedItemId: String,
     onItemSelected: (String) -> Unit,
-    hazeState: HazeState? = null,
+    hazeState: Any? = null,
     modifier: Modifier = Modifier
 ) {
     NavigationBar(
-        modifier = modifier
-            .fillMaxWidth()
-            .then(
-                if (hazeState != null) {
-                    Modifier.hazeChild(
-                        state = hazeState,
-                        style = HazeMaterials.ultraThin()
-                    )
-                } else Modifier
-            ),
-        containerColor = if (hazeState != null) {
-            MaterialTheme.colorScheme.surface.copy(alpha = 0.85f)
-        } else {
-            MaterialTheme.colorScheme.surface
-        },
+        modifier = modifier.fillMaxWidth(),
+        // [优化] 使用纯色背景替代模糊效果
+        containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface
     ) {
         items.forEach { item ->

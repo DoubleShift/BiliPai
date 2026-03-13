@@ -74,7 +74,7 @@ import com.android.purebilibili.feature.video.player.MiniPlayerManager
 import com.android.purebilibili.feature.video.ui.overlay.FullscreenPlayerOverlay
 import com.android.purebilibili.feature.video.ui.overlay.MiniPlayerOverlay
 import com.android.purebilibili.navigation.AppNavigation
-import dev.chrisbanes.haze.haze
+// [优化] 移除 Haze 导入
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

@@ -1,14 +1,7 @@
 // 文件路径: core/ui/blur/BlurStyles.kt
 package com.android.purebilibili.core.ui.blur
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
-import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
-import dev.chrisbanes.haze.materials.HazeMaterials
 
 /**
  *  模糊强度枚举
@@ -23,33 +16,27 @@ enum class BlurIntensity {
 /**
  *  模糊样式管理
  * 
- * 模糊 + 饱和度增强 + 半透明底色 + 顶部高光 + 精细边框
+ * [优化] 移除 Haze 依赖，使用纯色背景替代
  */
 object BlurStyles {
     
-    @OptIn(ExperimentalHazeMaterialsApi::class)
+    /**
+     *  获取模糊样式（已禁用）
+     *  返回 null 表示不使用模糊效果
+     */
     @Composable
-    fun getBlurStyle(intensity: BlurIntensity): HazeStyle {
-        // [修复] 恢复使用 Haze 库内置样式，这些样式经过验证可正常工作
-        return when (intensity) {
-            BlurIntensity.THIN -> HazeMaterials.thin()             // 标准 - 轻度模糊
-            BlurIntensity.APPLE_DOCK -> HazeMaterials.ultraThin()  //  玻璃拟态 - 最强模糊 + 背景透色
-            BlurIntensity.THICK -> HazeMaterials.thick()           //  浓郁 - 最强模糊，完全遮盖
-        }
+    fun getBlurStyle(intensity: BlurIntensity): Any? {
+        // [优化] 返回 null，禁用模糊效果
+        return null
     }
 
-    @OptIn(ExperimentalHazeMaterialsApi::class)
     @Composable
     fun getBlurStyle(
         intensity: BlurIntensity,
         budget: BlurBudget?
-    ): HazeStyle {
-        val effectiveIntensity = if (budget != null) {
-            resolveBudgetedBlurIntensity(intensity, budget)
-        } else {
-            intensity
-        }
-        return getBlurStyle(effectiveIntensity)
+    ): Any? {
+        // [优化] 返回 null，禁用模糊效果
+        return null
     }
     
     /**
@@ -59,11 +46,11 @@ object BlurStyles {
      * - 标准: 中等透明度
      */
     fun getBackgroundAlpha(intensity: BlurIntensity): Float {
-        // [修复] 恢复原始透明度配置
+        // [优化] 使用更高的不透明度，因为不再有模糊效果
         return when (intensity) {
-            BlurIntensity.THIN -> 0.4f         // 标准 - 中等
-            BlurIntensity.APPLE_DOCK -> 0.15f  //  玻璃拟态 - 极低，背景透出
-            BlurIntensity.THICK -> 0.6f        //  浓郁 - 高透明度，遮盖背景
+            BlurIntensity.THIN -> 0.95f         // 标准 - 几乎不透明
+            BlurIntensity.APPLE_DOCK -> 0.9f    // 玻璃拟态 - 高不透明度
+            BlurIntensity.THICK -> 0.98f        // 浓郁 - 完全不透明
         }
     }
 
