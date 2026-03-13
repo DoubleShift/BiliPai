@@ -36,11 +36,10 @@ android {
             useSupportLibrary = true
         }
 
-        // 👇👇👇 指定打包的 CPU 架构（64 位 + 32 位）👇👇👇
+        // 👇👇👇 指定打包的 CPU 架构（仅 64 位）👇👇👇
         ndk {
             // arm64-v8a: 现代 64 位真机
-            // armeabi-v7a: 兼容 32 位设备/盒子
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+            abiFilters += listOf("arm64-v8a")
         }
 
         manifestPlaceholders["castServiceProcess"] = castServiceProcess
