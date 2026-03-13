@@ -175,35 +175,31 @@ dependencies {
     implementation("io.coil-kt:coil-gif:2.7.0")  // 🔥 GIF 动图支持
     
     // --- 3.1 Palette (颜色提取 - 动态取色) ---
-    implementation("androidx.palette:palette-ktx:1.0.0")
+    // [移除] implementation("androidx.palette:palette-ktx:1.0.0")
     
     // --- 3.2 Lottie (动画效果) ---
-    implementation("com.airbnb.android:lottie-compose:6.6.2")
+    // [移除] implementation("com.airbnb.android:lottie-compose:6.6.2")
     
     // --- 3.3 Haze (毛玻璃效果) ---
-    implementation("dev.chrisbanes.haze:haze:1.7.1")
-    implementation("dev.chrisbanes.haze:haze-materials:1.7.1")
+    // [移除] implementation("dev.chrisbanes.haze:haze:1.7.1")
+    // [移除] implementation("dev.chrisbanes.haze:haze-materials:1.7.1")
     
     // --- 3.4 Shimmer (骨架屏加载) ---
-    implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
+    // [移除] implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
     
     // --- 3.5 Compose Cupertino (iOS 风格 UI 组件) ---
-    // 提供 iOS 风格的 Switch、Button、Picker、Dialog 等组件
-    implementation("io.github.alexzhirkevich:cupertino:0.1.0-alpha04")
-    implementation("io.github.alexzhirkevich:cupertino-adaptive:0.1.0-alpha04")
-    // 🍎 800+ iOS SF Symbols 风格图标
-    implementation("io.github.alexzhirkevich:cupertino-icons-extended:0.1.0-alpha04")
+    // [移除] implementation("io.github.alexzhirkevich:cupertino:0.1.0-alpha04")
+    // [移除] implementation("io.github.alexzhirkevich:cupertino-adaptive:0.1.0-alpha04")
+    // [移除] implementation("io.github.alexzhirkevich:cupertino-icons-extended:0.1.0-alpha04")
     
     // --- 3.6 Orbital (iOS 风格共享元素动画) ---
-    // 提供流畅的共享元素过渡、尺寸变换、位置移动动画
-    implementation("com.github.skydoves:orbital:0.4.0")
+    // [移除] implementation("com.github.skydoves:orbital:0.4.0")
     
     // --- 3.7 Startup (应用初始化) ---
     implementation("androidx.startup:startup-runtime:1.1.1")
     
     // --- 3.8 Backdrop (液态玻璃效果) ---
-    // 提供透镜折射、玻璃高光、连续圆角等 iOS/visionOS 风格视觉效果
-    implementation("io.github.kyant0:backdrop:1.0.6")
+    // [移除] implementation("io.github.kyant0:backdrop:1.0.6")
 
 
     // --- 4. Player (视频播放器 Media3) ---
