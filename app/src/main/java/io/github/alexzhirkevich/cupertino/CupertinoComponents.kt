@@ -114,3 +114,17 @@ fun CutePersonLoadingIndicator(
         strokeWidth = 4.dp
     )
 }
+
+/**
+ * [优化] 导出 CutePersonLoadingIndicator 到包级别
+ */
+@Composable
+fun CutePersonLoadingIndicator(
+    modifier: Modifier = Modifier
+) {
+    CircularProgressIndicator(
+        modifier = modifier.size(48.dp),
+        color = MaterialTheme.colorScheme.primary,
+        strokeWidth = 4.dp
+    )
+}

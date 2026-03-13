@@ -2,14 +2,8 @@ package com.android.purebilibili.core.ui.blur
 
 import android.os.Build
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import com.android.purebilibili.core.lifecycle.BackgroundManager
+import dev.chrisbanes.haze.HazeState
 
 internal fun shouldEnableRecoverableHeavyVisualEffects(
     userEnabled: Boolean,
@@ -31,14 +25,14 @@ internal fun shouldAllowDirectHazeLiquidGlassFallback(
 }
 
 /**
- * [优化] 返回 null 而不是 HazeState，禁用模糊效果
+ * [优化] 返回 HazeState 但禁用模糊效果
  */
 @Composable
 fun rememberRecoverableHazeState(
     userEnabled: Boolean = true,
     initialBlurEnabled: Boolean = true,
     sdkInt: Int = Build.VERSION.SDK_INT
-): Any? {
-    // [优化] 返回 null，禁用所有模糊效果
-    return null
+): HazeState {
+    // [优化] 返回 HazeState 但 blurEnabled 为 false
+    return HazeState(initialBlurEnabled = false)
 }
